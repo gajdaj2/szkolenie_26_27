@@ -1,8 +1,9 @@
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form
 from pydantic import BaseModel, Field
-from typing import Optional
 import ollama
 import uvicorn
+
+from agent_dodawanie import run_agent
 
 app = FastAPI(
     title="Ollama Chat API",
@@ -27,6 +28,15 @@ class ChatResponse(BaseModel):
     model: str
     success: bool
 
+
+@app.get("/test")
+async def test():
+    return {"success": True}
+
+
+@app.get("/agent")
+async def agent(question:str):
+    return run_agent(question)
 
 @app.get("/")
 async def root():
